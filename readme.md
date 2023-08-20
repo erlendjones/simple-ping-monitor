@@ -2,7 +2,8 @@
 
 Easily monitor that all machines are connected and reachable in your setup.
 
-<img width="478" alt="readme-image" src="https://github.com/erlendjones/simple-ping-monitor/assets/9471063/3ded6fa4-bd1d-4358-85e7-25a1e71b95cd">
+<img width="478" alt="readme-image" src="https://github.com/erlendjones/simple-ping-monitor/assets/9471063/00cf36ff-0e9f-4dbb-ab93-b37e968377c1">
+
 
 <h2>Install</h2>
 
