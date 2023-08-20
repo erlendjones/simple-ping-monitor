@@ -6,11 +6,15 @@ Easily monitor that all machines are connected and reachable in your setup.
 
 <h2>Install</h2>
 
+You need <a href="https://nodejs.org/en/download">node.js</a> and npm or <a href="https://www.hostinger.com/tutorials/how-to-install-yarn">yarn</a> already installed on your system.
+Tested with Node v18.16.0 and Yarn v1.22.19
+
 ```
 $ git clone git@github.com:erlendjones/simple-ping-monitor.git
 $ cd simple-ping-monitor
-$ yarn
 ```
+
+```$ yarn``` or ```$ npm install```
 
 <h2>Setup</h2>
 Edit index.ts with your setup
