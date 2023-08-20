@@ -17,6 +17,7 @@ export class SimplePingMonitor {
   lenName: number;
   httpTimeout: any;
   watchInterval: number;
+  lastSeen: { [key: string]: number } = {};
 
   constructor(
     machines: Machine[],
@@ -137,15 +138,16 @@ export class SimplePingMonitor {
           host: ip,
         })
         .then((res: any) => {
-          if (res?.reply?.typestr === "ECHO_REPLY")
+          if (res?.reply?.typestr === "ECHO_REPLY") {
+            this.setLastSeen(ip);
             resolve({
               machine: [ip, name, category],
               result: this.line(true, ip, name),
             });
-          else
+          } else
             resolve({
               machine: [ip, name, category],
-              result: this.line(false, ip, name),
+              result: this.line(false, ip, name, this.getLastSeen(ip)),
             });
         })
     );
@@ -158,7 +160,9 @@ export class SimplePingMonitor {
         timeout: this.httpTimeout,
       })
         .then((res: any) => {
-          if (res?.status === 200)
+          if (res?.status === 200) {
+            this.setLastSeen(res.machine[0]);
+
             resolve({
               machine: [ip, name, category],
               result: this.line(
@@ -168,18 +172,29 @@ export class SimplePingMonitor {
                 res.status + " " + res.statusText
               ),
             });
-          else
+          } else {
             resolve({
               machine: [ip, name, category],
               result: chalk.red(
-                this.line(false, ip, name, res.status + " " + res.statusText)
+                this.line(
+                  false,
+                  ip,
+                  name,
+                  res.status + " " + res.statusText + " " + this.getLastSeen(ip)
+                )
               ),
             });
+          }
         })
         .catch((err: Error & { code: string }) => {
           resolve({
             machine: [ip, name, category],
-            result: this.line(false, ip, name, err.code),
+            result: this.line(
+              false,
+              ip,
+              name,
+              err.code + " " + this.getLastSeen(ip)
+            ),
           });
         })
     );
@@ -224,6 +239,19 @@ export class SimplePingMonitor {
           " " +
           (extra || "")
       );
+  };
+
+  setLastSeen = (ip: string) => {
+    this.lastSeen[ip] = Date.now();
+  };
+
+  getLastSeen = (ip: string): string => {
+    if (this.lastSeen[ip] === undefined) return "never seen";
+    return (
+      "seen " +
+      Math.round((Date.now() - this.lastSeen[ip]) / 1000) +
+      " seconds ago"
+    );
   };
 
   process = (ip: string, name: string, category?: string): Promise<any> => {

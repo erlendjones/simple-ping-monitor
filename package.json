@@ -13,7 +13,7 @@
   },
   "scripts": {
     "build": "npx tsc",
-    "run": "node dist/index",
+    "start": "node dist/index",
     "dev-watch": "npx tsc --watch & nodemon -q -w dist dist/index",
     "dev": "npx tsc && node dist/index"
   }
