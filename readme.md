@@ -56,6 +56,8 @@ The monitor accepts an array of machines or endpoints to watch.
 
 They can be either pinged with icmp, or request an HTTP/HTTPS GET-endpoint and wait for a 200-response.
 
+Ther format is ```[ip/http-endpoint, name, category]```
+
 <h2>Run</h2>
 
 ```
