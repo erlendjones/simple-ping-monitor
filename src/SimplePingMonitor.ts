@@ -15,14 +15,19 @@ export class SimplePingMonitor {
   machines: Machine[];
   lenIP: number;
   lenName: number;
+  httpTimeout: any;
+  watchInterval: number;
 
   constructor(
     machines: Machine[],
     options?: {
-      interval: number; // ms
+      interval?: number; // ms
+      httpTimeout?: number; // ms
     }
   ) {
     this.machines = machines;
+    this.httpTimeout = options?.httpTimeout || 3000;
+    this.watchInterval = options?.interval || 10000;
 
     // get max lengths for printing
     this.lenIP = Math.max(...this.machines.map((m) => m[0].length));
@@ -34,7 +39,7 @@ export class SimplePingMonitor {
     this.resultInflight = false;
 
     // init
-    this.runInterval = setInterval(this.run, options?.interval);
+    this.runInterval = setInterval(this.run, this.watchInterval);
     this.printInterval = setInterval(this.print, 1000);
 
     // pre-run
@@ -150,7 +155,7 @@ export class SimplePingMonitor {
     return new Promise((resolve, reject) =>
       fetch(ip, {
         type: "GET",
-        timeout: 3000,
+        timeout: this.httpTimeout,
       })
         .then((res: any) => {
           if (res?.status === 200)
@@ -171,10 +176,10 @@ export class SimplePingMonitor {
               ),
             });
         })
-        .catch((err: Error) => {
+        .catch((err: Error & { code: string }) => {
           resolve({
             machine: [ip, name, category],
-            result: this.line(false, ip, name, err.name),
+            result: this.line(false, ip, name, err.code),
           });
         })
     );

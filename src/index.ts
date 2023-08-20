@@ -20,5 +20,6 @@ new SimplePingMonitor(
   ],
   {
     interval: 10000,
+    httpTimeout: 3000,
   }
 );
