@@ -10,11 +10,18 @@ You need <a href="https://nodejs.org/en/download">node.js</a> and npm or <a href
 Tested with Node v18.16.0 and Yarn v1.22.19
 
 ```
+// Download repo
 $ git clone git@github.com:erlendjones/simple-ping-monitor.git
-$ cd simple-ping-monitor
-```
 
-```$ yarn``` or ```$ npm install```
+// Open folder
+$ cd simple-ping-monitor
+
+// Install node_modules with
+$ yarn
+
+// or
+$ npm install
+```
 
 <h2>Setup</h2>
 Edit index.ts with your setup
